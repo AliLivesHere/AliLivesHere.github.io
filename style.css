@@ -1,0 +1,529 @@
+/* ---------- رنگ‌ها ---------- */
+:root,
+[data-theme="light"] {
+  --bg: #d6ff1f;                       /* پس‌زمینه نئونی */
+  --ink: #24104f;                      /* متن */
+  --muted: #4a3a7a;                    /* متن کم‌رنگ‌تر */
+  --paper: #fffef0;                    /* باکس اصلی */
+  --tile: #ffffff;                     /* کارت‌های داخلی */
+  --line: #24104f;                     /* حاشیه و سایه */
+  --pop: #ff5fcf;                      /* رنگ تأکیدی */
+  --on-pop: #24104f;
+  --box: #d6ff1f;                      /* باکس لینک‌ها */
+  --box-text: #24104f;
+  --dot: rgba(36, 16, 79, 0.14);       /* نقطه‌های پس‌زمینه */
+  --halo: rgba(255, 255, 255, 0.55);   /* روشنایی بالای صفحه */
+  --glow: rgba(255, 95, 207, 0.45);    /* درخشش دور عکس */
+  --page-glow: rgba(36, 16, 79, 0.35); /* سایه نرم زیر باکس اصلی */
+}
+
+[data-theme="dark"] {
+  --bg: #0d0820;
+  --ink: #efeaff;
+  --muted: #b9acd9;
+  --paper: #170f33;
+  --tile: #20153f;
+  --line: #d6ff1f;
+  --pop: #ff5fcf;
+  --on-pop: #0d0820;
+  --box: #26194f;
+  --box-text: #efeaff;
+  --dot: rgba(214, 255, 31, 0.09);
+  --halo: rgba(124, 77, 255, 0.35);
+  --glow: rgba(255, 95, 207, 0.5);
+  --page-glow: rgba(214, 255, 31, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse at 50% -10%, var(--halo), transparent 60%),
+    radial-gradient(var(--dot) 1.5px, transparent 1.5px);
+  background-size: 100% 100%, 24px 24px;
+  background-repeat: no-repeat, repeat;
+  color: var(--ink);
+  font-family: "Vazirmatn", Tahoma, "Segoe UI", sans-serif;
+  line-height: 1.9;
+}
+
+/* ---------- دکمه تغییر تم ---------- */
+.controls {
+  direction: ltr; /* ترتیب دکمه‌ها همیشه ثابت می‌ماند */
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.switch {
+  position: relative;
+  width: 4.6rem;
+  height: 2.5rem;
+  padding: 0;
+  background: var(--paper);
+  color: var(--muted);
+  border: 3px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.switch svg {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.t-sun  { left: 0.55rem; }
+.t-moon { right: 0.55rem; }
+
+.knob {
+  position: absolute;
+  top: 50%;
+  left: 0.2rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: var(--pop);
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: left 0.25s ease;
+}
+
+[data-theme="dark"] .theme-toggle .knob,
+[data-lang="en"] .lang-toggle .knob {
+  left: calc(100% - 1.75rem - 0.2rem);
+}
+
+.lang-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.l-fa { left: 0.6rem; }
+.l-en { right: 0.6rem; }
+
+.switch:focus-visible {
+  outline: 3px solid var(--pop);
+  outline-offset: 3px;
+}
+
+/* ---------- باکس اصلی ---------- */
+.page {
+  width: min(100% - 2rem, 56rem);
+  margin: 4.5rem auto 4rem;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  display: grid;
+  gap: 3.5rem;
+  background: var(--paper);
+  border: 4px solid var(--line);
+  border-radius: 2rem;
+  box-shadow: 14px 14px 0 var(--line), 0 40px 90px -30px var(--page-glow);
+  animation: rise 0.6s ease-out both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- معرفی ---------- */
+.hero {
+  text-align: center;
+}
+
+.avatar-wrap {
+  direction: ltr; /* متن چرخان همیشه چپ‌به‌راست رسم می‌شود */
+  position: relative;
+  width: 15rem;
+  height: 15rem;
+  margin: 0 auto 1.5rem;
+}
+
+/* متن چرخان دور عکس */
+.ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: var(--ink);
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  font-weight: 600;
+  animation: spin 28s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.avatar {
+  position: absolute;
+  inset: 17.5%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pop), var(--box));
+  box-shadow:
+    0 0 0 4px var(--paper),
+    0 0 0 8px var(--pop),
+    0 14px 40px var(--glow);
+  overflow: hidden;
+}
+
+.avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 9vw, 5rem);
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.role {
+  margin-top: 0.25rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.bio {
+  max-width: 36rem;
+  margin: 1rem auto 0;
+  color: var(--muted);
+}
+
+/* ---------- کارت کد ---------- */
+.code-card {
+  direction: ltr;
+  text-align: left;
+  background: #0e0820;
+  color: #efeaff;
+  border: 3px solid var(--line);
+  border-radius: 1rem;
+  box-shadow: 8px 8px 0 var(--line);
+  overflow: hidden;
+  font-family: "JetBrains Mono", Consolas, Menlo, monospace;
+  font-size: 0.95rem;
+}
+
+.code-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1.25rem;
+  border-bottom: 1px solid #3a2d63;
+  color: #b9acd9;
+}
+
+.status {
+  padding: 0 0.6rem;
+  background: #d6ff1f;
+  color: #24104f;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.code-card pre {
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  line-height: 1.8;
+}
+
+.code-card .k { color: #ff7bd8; }
+.code-card .s { color: #d6ff1f; }
+
+/* ---------- لینک‌ها ---------- */
+.links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.link-box,
+.tile {
+  color: var(--box-text);
+  text-decoration: none;
+  border: 3px solid var(--line);
+  border-radius: 1rem;
+  box-shadow: 6px 6px 0 var(--line);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.link-box:hover {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0 var(--line);
+}
+
+.link-box:focus-visible,
+.project-list a:focus-visible {
+  outline: 3px solid var(--pop);
+  outline-offset: 4px;
+}
+
+.link-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--box);
+}
+
+.link-box svg {
+  flex-shrink: 0;
+}
+
+.link-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.link-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.link-hint {
+  font-size: 0.8rem;
+  direction: ltr;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- بخش‌ها ---------- */
+.portfolio,
+.skills {
+  padding-top: 2.5rem;
+  border-top: 3px solid var(--line);
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+
+.section-note {
+  color: var(--muted);
+}
+
+/* نمونه‌کارها */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.25rem;
+  background: var(--tile);
+  color: var(--ink);
+  box-shadow: 5px 5px 0 var(--line);
+}
+
+.tile-tag {
+  align-self: flex-start;
+  white-space: nowrap;
+  padding: 0 0.9rem;
+  background: var(--accent);
+  color: var(--on-pop);
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.8;
+}
+
+.tile p {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.tile:nth-child(1) { --accent: #9b7bff; }
+.tile:nth-child(2) { --accent: #ff5fcf; }
+.tile:nth-child(3) { --accent: #3ddcff; }
+.tile:nth-child(4) { --accent: #5bffb0; }
+
+/* کارت بک‌اند (آماده) */
+.featured {
+  grid-column: 1 / -1;
+  gap: 1rem;
+}
+
+.tile-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-list a {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.9rem 1.1rem;
+  background: var(--paper);
+  color: var(--ink);
+  text-decoration: none;
+  border: 2px solid var(--line);
+  border-radius: 0.75rem;
+  transition: background-color 0.15s;
+}
+
+.project-list a:hover {
+  background: var(--box);
+  color: var(--box-text);
+}
+
+.project-list strong {
+  font-weight: 800;
+}
+
+.project-list span {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+/* برچسب وضعیت */
+.badge {
+  align-self: flex-start;
+  padding: 0 0.8rem;
+  border: 2px dashed var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.focus-badge {
+  background: var(--pop);
+  color: var(--on-pop);
+  border-style: solid;
+}
+
+.badge.ready {
+  background: var(--box);
+  color: var(--box-text);
+  border-style: solid;
+}
+
+/* حوزه‌های در حال ساخت */
+.soon {
+  background: transparent;
+  border-style: dashed;
+  box-shadow: none;
+}
+
+/* توانایی‌ها */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.chips li {
+  padding: 0.2rem 1.1rem;
+  background: var(--pop);
+  color: var(--on-pop);
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ---------- موبایل ---------- */
+@media (max-width: 40rem) {
+  .page {
+    margin-top: 4.5rem;
+    gap: 2.5rem;
+    box-shadow: 8px 8px 0 var(--line), 0 30px 60px -30px var(--page-glow);
+  }
+
+  .avatar-wrap {
+    width: 12.5rem;
+    height: 12.5rem;
+  }
+
+  .links {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+
+  .page,
+  .ring {
+    animation: none;
+  }
+}
+
+/* ---------- حالت انگلیسی ---------- */
+html[lang="en"] body {
+  font-family: "Space Grotesk", "Vazirmatn", Tahoma, "Segoe UI", sans-serif;
+  line-height: 1.7;
+}
+
+html[lang="en"] h1,
+html[lang="en"] h2 {
+  font-weight: 700;
+}
+
+html[lang="en"] .link-hint {
+  text-align: left;
+}
+
+/* عنوان کارت بک‌اند + FastAPI */
+.tile-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.stack {
+  direction: ltr;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
